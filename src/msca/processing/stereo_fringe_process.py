@@ -306,7 +306,7 @@ class FringeProcess(GrayCode, FringePattern):
         abs_phi_image_right[mask_right3] = phi_image_right[mask_right3] + 2 * np.pi * (
                 np.floor((remaped_qsi_image_right[mask_right3] + 1) / 2) - 1) + np.pi
 
-        if visualize:
+        if visualize or save:
             fig, axes = plt.subplots(3, 2, figsize=(10, 8))
 
             middle_index_left = int(self.images_left.shape[1] / 2)
@@ -320,18 +320,24 @@ class FringeProcess(GrayCode, FringePattern):
                                remaped_qsi_image_right[middle_index_right, :], 'Abs Phi Image right 1D',
                                'Abs Phi Image right')
 
+
             self.plot_2d_image(axes[1, 0], abs_phi_image_left, 'Abs Phi Image left 2D')
             self.plot_2d_image(axes[1, 1], abs_phi_image_right, 'Abs Phi Image right 2D')
 
             self.plot_2d_image(axes[2, 0], modulation_map_l, 'Modulation Map left', cmap='jet')
             self.plot_2d_image(axes[2, 1], modulation_map_r, 'Modulation Map right', cmap='jet')
+            
+            fig.suptitle('Fase absoluta {}'.format(name))
+            plt.tight_layout()
+            
             if save:
                 plt.savefig("gráfico_mapa_de_fase.png", dpi=300, bbox_inches='tight')
-
-            fig.suptitle('Fase absoluta {}'.format(name))
-
-            plt.tight_layout()
-            plt.show()
+                
+            if visualize:
+                plt.show()
+            else:
+                plt.close(fig)
+                
         print('Process abs phase: {} dt'.format(round(time.time() - t0, 2)))
         return abs_phi_image_left, abs_phi_image_right, modulation_map_l, modulation_map_r
 

@@ -68,7 +68,9 @@ def main():
 
     # Calcular Fase Absoluta (Desembrulhada via GrayCode) e Mapas de Modulação
     abs_phi_image_left, abs_phi_image_right, modulation_mask_left, modulation_mask_right = stereo.calculate_abs_phi_images(visualize=False, save=True)
-
+    np.save("abs_phi_image_left.npy", abs_phi_image_left)
+    np.save("abs_phi_image_right.npy", abs_phi_image_right)
+    
     # ----- Passo 2: Triangulação Inversa 3D (CuPy) -----
     if not os.path.exists(calib_file):
         print(f"Arquivo de calibração não encontrado: {calib_file}")
